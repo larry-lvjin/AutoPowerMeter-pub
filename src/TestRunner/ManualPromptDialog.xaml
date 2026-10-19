@@ -1,0 +1,36 @@
+<Window x:Class="AutoPowerMeter.TestRunner.ManualPromptDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="需要人工操作"
+        Width="560" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        FontSize="14">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="TitleText" FontSize="16" FontWeight="Bold" Margin="0 0 0 10"
+                   Text="请人工操作" />
+
+        <TextBlock Grid.Row="1" x:Name="BodyText" TextWrapping="Wrap"
+                   Foreground="#333" Margin="0 0 0 14"
+                   Text="说明" />
+
+        <TextBlock Grid.Row="2" x:Name="HintText" TextWrapping="Wrap"
+                   Foreground="#888" FontSize="12" Margin="0 0 0 14" />
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="AbortButton" Content="中止跑批" Width="100" Margin="0 0 8 0"
+                    Click="AbortButton_Click" />
+            <Button x:Name="SkipButton" Content="跳过本项" Width="100" Margin="0 0 8 0"
+                    Click="SkipButton_Click" />
+            <Button x:Name="ContinueButton" Content="完成,继续" Width="120"
+                    Click="ContinueButton_Click" IsDefault="True" />
+        </StackPanel>
+    </Grid>
+</Window>

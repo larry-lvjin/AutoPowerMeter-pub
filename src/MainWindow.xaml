@@ -1,0 +1,39 @@
+<ui:FluentWindow x:Class="AutoPowerMeter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:vm="clr-namespace:AutoPowerMeter.ViewModels"
+        xmlns:views="clr-namespace:AutoPowerMeter.Views"
+        Title="AutoPowerMeter — PLAUD 全自动功耗测试"
+        Height="700" Width="1180" MinHeight="520" MinWidth="860"
+        FontFamily="Microsoft YaHei UI" FontSize="14"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        WindowCornerPreference="Round"
+        WindowState="Normal"
+        WindowStartupLocation="CenterScreen">
+
+    <ui:FluentWindow.DataContext>
+        <vm:MainViewModel />
+    </ui:FluentWindow.DataContext>
+
+    <ui:FluentWindow.InputBindings>
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding TestPlan.RunCheckedCommand}" />
+        <KeyBinding Key="P" Modifiers="Control" Command="{Binding TestPlan.PauseCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding TestPlan.StopCommand}" />
+    </ui:FluentWindow.InputBindings>
+
+    <Grid Background="#151820">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="0" Title="AutoPowerMeter · PLAUD 全自动功耗测试" Background="#201C2A" />
+        <Grid x:Name="DashboardViewport" Grid.Row="1" ClipToBounds="True"
+              SizeChanged="DashboardViewport_SizeChanged">
+            <views:AutomationDashboardView x:Name="Dashboard" Width="1180" Height="652"
+                                           HorizontalAlignment="Left" VerticalAlignment="Top"
+                                           RenderTransformOrigin="0,0" />
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>false</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AutoPowerMeter</RootNamespace>
+    <AssemblyName>AutoPowerMeter</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>power.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kelary.Ivi.Visa" Version="5.11.3422" NoWarn="NU1701" />
+    <PackageReference Include="ClosedXML" Version="0.104.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+    <PackageReference Include="System.IO.Ports" Version="192.0.2.10" />
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Tools\**\*.cs" />
+    <Content Include="..\tools\go-ios\ios.exe;..\tools\go-ios\wintun.dll" Link="Resources\go-ios\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="..\tools\wintun-0.14.1\wintun\LICENSE.txt" Link="Resources\go-ios\wintun-LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\tools\go-ios\LICENSE" Link="Resources\go-ios\go-ios-LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Docs\自动连接说明.md" Link="使用说明.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Docs\HTTP-WDA行为监督验证-20260913.md" Link="Docs\HTTP-WDA行为监督验证-20260913.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Docs\iPhone快捷指令接入.md" Link="Docs\iPhone快捷指令接入.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Docs\模板Delta S_MB_P0.1-V1.0.0 功耗测试深联+三德盈PCB+M8(RZ+M8) (1).xlsx" Link="Docs\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Docs\测试用例及模板\Deltas + Delta 全功耗  测试用例.xlsx;..\Docs\测试用例及模板\Deltas + Delta 全功耗  测试报告模板.xlsx;..\Docs\测试用例及模板\Deltas + Delta 基本功耗  测试用例.xlsx;..\Docs\测试用例及模板\Deltas + Delta 基本功耗  测试报告模板.xlsx" Link="Docs\测试用例及模板\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="power.ico" />
+    <Compile Remove="obj\**\*.cs" />
+    <Compile Remove="artifacts\**\*.cs" />
+    <None Update="Resources\test_plan.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\tap_map.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Resources\wda-scripts\*.py" Link="Resources\wda-scripts\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\research\RecPlay\2_录制回放\录制文件脚本库\*.json" Exclude="..\research\RecPlay\2_录制回放\录制文件脚本库\绑定FindMy-iOS26.json;..\research\RecPlay\2_录制回放\录制文件脚本库\在FindMy界面播放声音中暂停.json" Link="Resources\recordings\%(Filename)%(Extension)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\recordings\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <SatelliteResourceLanguages>zh-Hans;en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <SelfContained>true</SelfContained>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <Target Name="GenerateBuildValidityStamp" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <_BuildUtcTicks>$([System.DateTime]::UtcNow.Ticks)</_BuildUtcTicks>
+      <_BuildStampFile>$(IntermediateOutputPath)BuildValidityStamp.g.cs</_BuildStampFile>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(_BuildStampFile)"
+      Lines="namespace AutoPowerMeter.Utils { internal static class BuildValidityStamp { internal const long UtcTicks = $(_BuildUtcTicks)L%3B } }"
+      Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Compile Include="$(_BuildStampFile)" />
+      <FileWrites Include="$(_BuildStampFile)" />
+    </ItemGroup>
+  </Target>
+
+</Project>
