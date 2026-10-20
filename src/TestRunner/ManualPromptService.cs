@@ -11,28 +11,7 @@ public sealed class ManualPromptService
     /// <summary>展示模态弹窗并等待用户选择。</summary>
     public Task<PromptChoice> ShowAsync(string title, string body, string? hint = null, CancellationToken ct = default)
     {
-        var tcs = new TaskCompletionSource<PromptChoice>(TaskCreationOptions.RunContinuationsAsynchronously);
-        var app = Application.Current ?? throw new InvalidOperationException("no WPF Application");
-        app.Dispatcher.InvokeAsync(() =>
-        {
-            try
-            {
-                var dlg = new ManualPromptDialog(title, body, hint)
-                {
-                    Owner = app.MainWindow
-                };
-                ct.Register(() =>
-                {
-                    if (dlg.IsLoaded && dlg.IsVisible) dlg.Close();
-                });
-                dlg.ShowDialog();
-                tcs.TrySetResult(dlg.Choice);
-            }
-            catch (Exception ex)
-            {
-                tcs.TrySetException(ex);
-            }
-        });
-        return tcs.Task;
+        // 实现细节未公开（算法核心）
+        throw new NotImplementedException("该方法的实现不在开源范围内");
     }
 }

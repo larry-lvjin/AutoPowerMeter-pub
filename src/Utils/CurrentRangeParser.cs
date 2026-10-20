@@ -14,36 +14,7 @@ public static partial class CurrentRangeParser
 
     public static Limit Parse(string text)
     {
-        var limit = new Limit { OriginalText = text ?? "" };
-        if (string.IsNullOrWhiteSpace(text)) return limit;
-
-        var m = LimitRegex().Match(text.Trim());
-        if (!m.Success) return limit;
-
-        limit.Op = m.Groups["op"].Value switch
-        {
-            "≥" or ">=" or "＞=" => LimitOp.GreaterOrEqual,
-            ">" or "＞" => LimitOp.Greater,
-            "<" or "＜" => LimitOp.Less,
-            _ => LimitOp.LessOrEqual
-        };
-
-        var val = double.Parse(m.Groups["val"].Value, System.Globalization.CultureInfo.InvariantCulture);
-        var unit = m.Groups["unit"].Value;
-        var isUa = unit.Equals("uA", StringComparison.OrdinalIgnoreCase) || unit == "µA" || unit.Equals("UA", StringComparison.OrdinalIgnoreCase);
-        limit.OriginalInMicroAmps = isUa;
-        limit.ThresholdUa = isUa ? val : val * 1000.0;
-
-        if (m.Groups["tol"].Success)
-        {
-            var tol = double.Parse(m.Groups["tol"].Value, System.Globalization.CultureInfo.InvariantCulture);
-            var tolUnit = m.Groups["tolUnit"].Value;
-            var tolIsUa = string.IsNullOrEmpty(tolUnit)
-                ? isUa
-                : (tolUnit.Equals("uA", StringComparison.OrdinalIgnoreCase) || tolUnit == "µA" || tolUnit.Equals("UA", StringComparison.OrdinalIgnoreCase));
-            limit.ToleranceUa = tolIsUa ? tol : tol * 1000.0;
-        }
-
-        return limit;
+        // 实现细节未公开（算法核心）
+        throw new NotImplementedException("该方法的实现不在开源范围内");
     }
 }

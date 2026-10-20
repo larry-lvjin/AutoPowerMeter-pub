@@ -81,9 +81,8 @@ public static class PhoneUiEvidence
     // 新版录音面板使用“暂停/结束/录音标记”，而不是“暂停录音/结束录音/添加标记”。
     public static bool HasRecordingControls(IReadOnlyList<PhoneUiElement> elements)
     {
-        bool Has(params string[] names) => elements.Any(e => names.Any(e.Matches));
-        return Has("结束", "结束录音")
-            && Has("暂停", "暂停录音", "继续", "继续录音", "恢复录音", "录音标记", "添加标记");
+        // 实现细节未公开（算法核心）
+        throw new NotImplementedException("该方法的实现不在开源范围内");
     }
 }
 
@@ -99,10 +98,8 @@ public sealed record PhoneUiElement(
     double Width,
     double Height)
 {
-    public bool Matches(string text)
-        => string.Equals(Name, text, StringComparison.Ordinal)
-           || string.Equals(Label, text, StringComparison.Ordinal)
-           || string.Equals(Value, text, StringComparison.Ordinal);
+    // 实现细节未公开（算法核心）
+    throw new NotImplementedException("该方法的实现不在开源范围内");
 }
 
 public sealed class PhoneActionException : Exception
